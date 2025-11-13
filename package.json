@@ -1,0 +1,19 @@
+{
+  "name": "MeEmprega",
+  "version": "1.0.0",
+  "description": "Script para buscar e filtrar vagas do LinkedIn automaticamente.",
+  "main": "MeEmprega.js",
+  "type": "module",
+  "scripts": {
+    "start": "node MeEmprega.js"
+  },
+  "author": "Jacaré",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.0",
+    "cheerio": "^1.0.0-rc.12",
+    "puppeteer": "^22.0.0",
+    "jsdom": "^24.0.0"
+  }
+}
+
