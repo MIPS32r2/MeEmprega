@@ -25,3 +25,11 @@ Antes de tudo, instale:
 1. Clone o repositório:
    ```bash
    git clone https://github.com/MIPS32r2/MeEmprega.git
+
+### Instalação
+
+```bash
+git clone https://github.com/MIPS32r2/MeEmprega.git
+cd MeEmprega
+npm install
+npm start
