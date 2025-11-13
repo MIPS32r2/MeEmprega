@@ -8,7 +8,7 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 const ask = (q) => new Promise((res) => rl.question(q, res));
 
 (async () => {
-  console.log("🔍 Busca de vagas reais no LinkedIn");
+  console.log("🔍 Busca de vagas no LinkedIn");
   console.log("----------------------------------");
 
   const keyword = await ask("📌 Digite o termo da vaga (ex: linux, devops): ");
@@ -63,7 +63,7 @@ const ask = (q) => new Promise((res) => rl.question(q, res));
   // -----------------------------------------------------------
   // 2️⃣ Buscar vagas reais no LinkedIn (HTML parsing com jsdom)
   // -----------------------------------------------------------
-  console.log(`\n📡 Buscando vagas de "${keyword}" em ${locationName} (${f_TPR})...\n`);
+  console.log(`\n📡 Buscando vagas de "${keyword}" em ${locationName}...\n`);
 
   const baseUrl = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search";
   let start = 0;
