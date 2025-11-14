@@ -1,13 +1,18 @@
 # 💼 MeEmprega
 
-Script em **Node.js** para buscar **vagas reais do LinkedIn** usando a API pública de listagem (`/jobs/api/seeMoreJobPostings/search`).
+Script em para buscar **vagas reais do LinkedIn** usando a API pública de listagem (`/jobs/api/seeMoreJobPostings/search`).
 
-Permite filtrar por:
-- 🔍 Palavra-chave (ex: linux, devops)
-- 📍 Localidade (ex: Goiânia, Brazil)
-- ⏱️ Período (últimas 24h, semana ou mês)
+🔍 Palavra-chave: permite buscar vagas por termos como linux, devops, etc.
 
-Os resultados são exibidos no terminal e também exportados para um arquivo `vagas_reais.json`.
+📍 Localidade: busca vagas por região
+
+⏱️ Período: filtra vagas publicadas nas últimas 24 horas, na última semana ou no último mês.
+
+🏠 Tipo de trabalho: opcionalmente filtra entre remoto, híbrido ou presencial.
+
+⚡ Easy Apply: permite filtrar vagas que oferecem aplicação simplificada.
+
+Os resultados são exibidos no terminal e também exportados para um arquivo `vagas_filtradas.json`.
 
 ---
 
