@@ -26,13 +26,21 @@ const ask = (q) => new Promise((res) => rl.question(q, res));
   console.log("3. Presencial");
   console.log("4. Qualquer um");
   const optWorkType = await ask("Selecione 1, 2, 3 ou 4: ");
+
+  console.log("\n⚡ Aplicação simplificada (Easy Apply)?");
+  console.log("1. Sim");
+  console.log("2. Não (tanto faz)");
+  const optEasyApply = await ask("Selecione 1 ou 2: ");
+
   rl.close();
 
   const timeMap = { 1: "r86400", 2: "r604800", 3: "r2592000" };
   const f_TPR = timeMap[optPeriod] || "r86400";
 
-  const workTypeMap = { 1: "1", 2: "2", 3: "3" };
+  const workTypeMap = { 1: "2", 2: "3", 1: "1" };
   const f_WT = workTypeMap[optWorkType] || "";
+
+  const f_AL = optEasyApply === "1" ? "true" : "";
 
   // -----------------------------------------------------------
   // 1️⃣ Obter automaticamente o geoId da localidade informada
@@ -76,7 +84,8 @@ const ask = (q) => new Promise((res) => rl.question(q, res));
         f_TPR,
         start,
         ...(f_WT ? { f_WT } : {}),
-        ...(geoId ? { geoId } : { location: locationName }),
+        ...(f_AL ? { f_AL } : {}),
+        ...(geoId ? { geoId } : { location: locationName })
       };
 
       const res = await axios.get(baseUrl, {
@@ -87,7 +96,7 @@ const ask = (q) => new Promise((res) => rl.question(q, res));
         },
       });
 
-      if (!res.data || res.data.trim() === "") break; // Sem mais resultados
+      if (!res.data || res.data.trim() === "") break;
       const dom = new JSDOM(res.data);
       const document = dom.window.document;
       const cards = document.querySelectorAll(".base-card");
@@ -105,7 +114,7 @@ const ask = (q) => new Promise((res) => rl.question(q, res));
 
       allJobs.push(...jobs);
       console.log(`📄 Página ${start / 25 + 1}: +${jobs.length} vagas`);
-      start += 25; // Avança a paginação padrão
+      start += 25;
     }
 
     console.log(`\n🔎 Foram encontradas ${allJobs.length} vagas em ${locationName}:`);
