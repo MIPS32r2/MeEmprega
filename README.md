@@ -27,3 +27,13 @@ git clone https://github.com/MIPS32r2/MeEmprega.git
 cd MeEmprega
 npm install
 npm start
+
+---
+## ⭐ Créditos
+
+> Este projeto foi fortemente inspirado pela documentação criada por  
+> **[@Diegiwg](https://github.com/Diegiwg)**  
+>  
+> 📝 Gist original:  
+> https://gist.github.com/Diegiwg/51c22fa7ec9d92ed9b5d1f537b9e1107
+
