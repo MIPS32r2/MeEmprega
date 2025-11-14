@@ -11,14 +11,25 @@ const normalizeText = (text) =>
 
 const interpretarLocalidade = (input) => {
   const cleaned = input.trim().toLowerCase();
-  const isState = cleaned.includes("brazil");
+  const normalized = normalizeText(cleaned);
 
-  let name = cleaned.replace(", brazil", "").trim();
-
-  if (isState) {
-    return { tipo: "estado", termo: name };
+  if (normalized === "brazil" || normalized === "brasil") {
+    return { tipo: "pais", termo: "Brazil" };
   }
-  return { tipo: "cidade", termo: name };
+
+  if (cleaned.includes(",")) {
+    const partes = cleaned.split(",").map(p => p.trim());
+    if (partes.length === 2) {
+      const cidade = partes[0];
+      const pais = normalizeText(partes[1]);
+
+      if (pais === "brazil" || pais === "brasil") {
+        return { tipo: "estado", termo: cidade };
+      }
+    }
+  }
+
+  return { tipo: "cidade", termo: cleaned };
 };
 
 (async () => {
@@ -29,10 +40,12 @@ const interpretarLocalidade = (input) => {
 
   let locationName = "";
   let geoId = null;
+  let tipoLocalidade = "";
 
   do {
-    const inputLoc = await ask("🌎 Digite a localidade (ex: São Paulo ou São Paulo, Brazil): ");
+    const inputLoc = await ask("🌎 Digite a localidade (ex: Goiânia, Brazil): ");
     const { tipo, termo } = interpretarLocalidade(inputLoc);
+    tipoLocalidade = tipo;
 
     try {
       const suggestRes = await axios.get(
@@ -41,7 +54,12 @@ const interpretarLocalidade = (input) => {
           params: {
             origin: "jserp",
             typeaheadType: "GEO",
-            geoTypes: tipo === "estado" ? "STATE" : "POPULATED_PLACE",
+            geoTypes:
+              tipo === "pais"
+                ? "COUNTRY"
+                : tipo === "estado"
+                  ? "STATE"
+                  : "POPULATED_PLACE",
             query: termo,
           },
           headers: { "User-Agent": "Mozilla/5.0", "Accept-Language": "pt-BR,pt;q=0.9" },
@@ -49,24 +67,23 @@ const interpretarLocalidade = (input) => {
       );
 
       const hits = suggestRes.data || [];
-      const match = hits.find(
-        (el) => normalizeText(el.displayName.split(",")[0]) === normalizeText(termo)
-      );
 
-      if (match) {
+      if (hits.length > 0) {
+        const match = hits[0];
         geoId = match.id;
         locationName = match.displayName.split(",")[0];
-        console.log(`✅ Localidade reconhecida (${tipo === "estado" ? "Estado" : "Cidade"}): ${locationName}`);
+        console.log(`✅ Localidade reconhecida (${tipoLocalidade}): ${match.displayName}`);
         break;
       } else {
         console.log("⚠️ Localidade não encontrada. Tente novamente.");
       }
+
     } catch (err) {
-      console.warn("⚠️ Erro ao consultar:", err.message);
+      console.warn("⚠️ Erro na consulta:", err.message);
     }
   } while (!locationName);
 
-  console.log("1. Últimas 24 horas");
+  console.log("\n1. Últimas 24 horas");
   console.log("2. Última semana");
   console.log("3. Último mês");
   const optPeriod = await ask("Selecione 1, 2 ou 3: ");
@@ -147,13 +164,13 @@ const interpretarLocalidade = (input) => {
           }
 
         } catch {
-          console.log("⚠️ Descrição indisponível:", title);
+          console.log("⚠️ Sem descrição:", title);
         }
 
         await new Promise((r) => setTimeout(r, 800));
       }
 
-      console.log(`📄 Página ${start / 25 + 1} analisada...`);
+      console.log(`📄 Página ${(start / 25) + 1} analisada...`);
       start += 25;
     }
 
