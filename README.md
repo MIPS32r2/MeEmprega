@@ -1,6 +1,6 @@
 # 💼 MeEmprega
 
-Script em para buscar **vagas reais do LinkedIn** usando a API pública de listagem (`/jobs/api/seeMoreJobPostings/search`).
+Script para buscar **vagas reais do LinkedIn** usando a API pública de listagem (`/jobs/api/seeMoreJobPostings/search`).
 
 🔍 Palavra-chave: permite buscar vagas por termos como linux, devops, etc.
 
